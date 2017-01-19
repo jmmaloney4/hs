@@ -4,10 +4,10 @@ type HumanPlayer struct {
 }
 
 func (player HumanPlayer) InputType() InputType {
-    return InputTypeCommandLine
+	return InputTypeCommandLine
 }
 
 func NewHumanPlayer() *HumanPlayer {
-    rv := new(HumanPlayer)
-    return rv
+	rv := new(HumanPlayer)
+	return rv
 }
