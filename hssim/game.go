@@ -99,7 +99,10 @@ func (game *Game) LoadDeck(csvPath string) (*Deck, error) {
 				d = append(d, newCard)
 				// fmt.Println("old: ", &c, "new: ", &newCard)
                 break
-			}
+            } else {
+                continue
+            }
+            // TODO: Error Card Not Found
 		}
 	}
     
@@ -107,7 +110,7 @@ func (game *Game) LoadDeck(csvPath string) (*Deck, error) {
 }
 
 func (game *Game) GetCardByName(name string) (Card, error) {
-    fmt.Println("Card Index: ", game.cardIndex)
+    // fmt.Println("Card Index: ", game.cardIndex)
 	return nil, nil
 }
 
