@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jmmaloney4/hearthstone-sim/hssim"
+	"github.com/jmmaloney4/hssim/hssim"
 	"math/rand"
 	"time"
 )
