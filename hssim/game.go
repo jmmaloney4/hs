@@ -73,18 +73,41 @@ func (deck Deck) Draw() Card {
 	return rv
 }
 
-func NewDeck(csvPath string) (*Deck, error) {
+func (game *Game) LoadDeck(csvPath string) (*Deck, error) {
 	file, err := os.Open(csvPath)
 	if err != nil {
 		return nil, err
 	}
 
 	r := csv.NewReader(file)
-	record, err := r.Read()
+	rec, err := r.Read()
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(record)
+	// fmt.Println(rec)
+
+	d := make([]Card, 0)
+
+	for _, n := range rec {
+		// fmt.Println(n)
+		// fmt.Println(game.cardIndex)
+		for _, c := range game.cardIndex {
+			// fmt.Println(n, " == ", c.Name())
+			if n == c.Name() {
+				var newCard Card
+				newCard = c
+				d = append(d, newCard)
+				// fmt.Println("old: ", &c, "new: ", &newCard)
+                break
+			}
+		}
+	}
+    
+	return nil, nil
+}
+
+func (game *Game) GetCardByName(name string) (Card, error) {
+    fmt.Println("Card Index: ", game.cardIndex)
 	return nil, nil
 }
 

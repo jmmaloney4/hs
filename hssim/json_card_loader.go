@@ -2,7 +2,7 @@ package hssim
 
 import (
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 )
 
@@ -18,18 +18,17 @@ type JsonCard struct {
 	Text      string
 	// Artist string
 	// Flavor string
-    
-    // Minion specific
+
+	// Minion specific
 	Attack int // Shared with Weapon
 	Health int
 	Race   string
-    
-    //Spell specific
-    
-    //Weapon specific
-    // Borrows Attack from Minion
-    Durability int
-    
+
+	//Spell specific
+
+	//Weapon specific
+	// Borrows Attack from Minion
+	Durability int
 }
 
 func DecodeClass(cls string) Class {
@@ -57,11 +56,11 @@ func DecodeClass(cls string) Class {
 	}
 }
 
-func LoadCardsFromJsonFile(path string) ([]Card, error) {
+func (game *Game) LoadCardsFromJsonFile(path string) error {
 	// read JSON file
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Initialize datastructure for Unmarshall to fill in
@@ -81,9 +80,9 @@ func LoadCardsFromJsonFile(path string) ([]Card, error) {
 		}
 	}
 
-	rv := make([]Card, count)
+	game.cardIndex = make([]Card, 0)
 
-	for i, c := range basicSet {
+	for _, c := range basicSet {
 		abs := AbstractCard{id: c.ID, name: c.Name, class: DecodeClass(c.PlayerClass), cost: c.Cost, text: c.Text}
 
 		switch c.Type {
@@ -114,16 +113,19 @@ func LoadCardsFromJsonFile(path string) ([]Card, error) {
 				}
 			}
 			// fmt.Println(minion)
-			rv[i] = minion
+			game.cardIndex = append(game.cardIndex, minion)
+			// fmt.Println(game.cardIndex)
 		case "SPELL":
 			spell := BasicSpellCard{abs}
-            rv[i] = spell
+			game.cardIndex = append(game.cardIndex, spell)
 		case "WEAPON":
-            weapon := BasicWeaponCard{abs, c.Attack, c.Durability}
-            rv[i] = weapon
-            fmt.Println(weapon)
+			weapon := BasicWeaponCard{abs, c.Attack, c.Durability}
+			game.cardIndex = append(game.cardIndex, weapon)
+			// fmt.Println(weapon)
 		}
 	}
+    
+    // fmt.Println("Card Index: ", game.cardIndex)
 
-	return rv, nil
+	return nil
 }

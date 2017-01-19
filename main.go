@@ -8,18 +8,19 @@ import (
 )
 
 func main() {
-	fmt.Println(hssim.ClassShaman)
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	p0 := hssim.NewHumanPlayer()
 	p1 := hssim.NewHumanPlayer()
 	game, _ := hssim.NewGame(p0, p1)
-    
-    _, err := hssim.NewDeck("deck.csv")
-    fmt.Println(err)
-    
+
+    game.LoadCardsFromJsonFile("cards.json")
+
+	game.GetCardByName("")
+
+	_, err := game.LoadDeck("deck.csv")
+	fmt.Println(err)
+
 	fmt.Println(game)
-    
-    hssim.LoadCardsFromJsonFile("cards.json")
 }
