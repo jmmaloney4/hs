@@ -1,10 +1,8 @@
 package hssim
 
 import (
-	"encoding/csv"
 	// "fmt"
 	"math/rand"
-	"os"
 )
 
 type InputType int
@@ -46,6 +44,12 @@ const (
 
 type Player interface {
 	InputType() InputType
+	Deck() *Deck
+	Hand() *[]Card
+
+	LoadDeck(csvPath string, game *Game) error
+
+	Mulligan(gofirst bool) error
 }
 
 type Game struct {
@@ -66,39 +70,14 @@ func (deck Deck) Draw() Card {
 	r %= len(deck.contents)
 	rv := deck.contents[r]
 
-	newContents := make([]Card, len(deck.contents)-1)
-	copy(newContents, deck.contents)
-	deck.contents = newContents
+	nc := make([]Card, 0, len(deck.contents)-1)
+	for i, c := range deck.contents {
+		if i != r {
+			nc = append(nc, c)
+		}
+	}
 
 	return rv
-}
-
-func (game *Game) LoadDeck(csvPath string) (*Deck, error) {
-	file, err := os.Open(csvPath)
-	if err != nil {
-		return nil, err
-	}
-
-	r := csv.NewReader(file)
-	rec, err := r.Read()
-	if err != nil {
-		return nil, err
-	}
-	// fmt.Println(rec)
-
-	d := make([]Card, 0)
-
-	for _, n := range rec {
-		// fmt.Println(n)
-		// fmt.Println(game.cardIndex)
-		c, err := game.GetCardByName(n)
-		if err != nil {
-			return nil, err
-		}
-		d = append(d, c)
-	}
-
-	return &Deck{d}, nil
 }
 
 func (game *Game) GetCardByName(name string) (Card, error) {
@@ -117,6 +96,11 @@ func (game *Game) GetCardByName(name string) (Card, error) {
 	}
 
 	return nil, nil
+}
+
+func (game *Game) StartGame() {
+	game.players[0].Mulligan(true)
+	game.players[1].Mulligan(false)
 }
 
 func NewGame(p0 Player, p1 Player) (*Game, error) {

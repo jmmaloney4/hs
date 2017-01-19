@@ -17,8 +17,11 @@ func main() {
 
 	game.LoadCardsFromJsonFile("cards.json")
 
-	game.LoadDeck("deck.csv")
+	p0.LoadDeck("deck.csv", game)
+	p1.LoadDeck("deck.csv", game)
 	//fmt.Println(err)
+
+	game.StartGame()
 
 	//fmt.Println(game)
 }
