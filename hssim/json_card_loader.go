@@ -18,9 +18,18 @@ type JsonCard struct {
 	Text      string
 	// Artist string
 	// Flavor string
-	Attack int
+    
+    // Minion specific
+	Attack int // Shared with Weapon
 	Health int
 	Race   string
+    
+    //Spell specific
+    
+    //Weapon specific
+    // Borrows Attack from Minion
+    Durability int
+    
 }
 
 func DecodeClass(cls string) Class {
@@ -65,7 +74,7 @@ func LoadCardsFromJsonFile(path string) ([]Card, error) {
 	for _, c := range cards {
 		if c.Set == "CORE" {
 			basicSet = append(basicSet, c)
-			if c.Type == "SPELL" {
+			if c.Type == "WEAPON" {
 				//fmt.Println(c)
 			}
 			count++
@@ -104,12 +113,15 @@ func LoadCardsFromJsonFile(path string) ([]Card, error) {
 					minion.taunt = true
 				}
 			}
-			fmt.Println(minion)
+			// fmt.Println(minion)
 			rv[i] = minion
 		case "SPELL":
-			// spell := BasicSpellCard{abs}
-
+			spell := BasicSpellCard{abs}
+            rv[i] = spell
 		case "WEAPON":
+            weapon := BasicWeaponCard{abs, c.Attack, c.Durability}
+            rv[i] = weapon
+            fmt.Println(weapon)
 		}
 	}
 

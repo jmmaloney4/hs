@@ -1,6 +1,7 @@
 package hssim
 
 type MinionCard interface {
+    Card
 	Attact() int
 	Health() int
 	Race() MinionRace
