@@ -91,31 +91,31 @@ func (game *Game) LoadDeck(csvPath string) (*Deck, error) {
 	for _, n := range rec {
 		// fmt.Println(n)
 		// fmt.Println(game.cardIndex)
-        c,  err := game.GetCardByName(n)
-        if err != nil {
-            return nil, err
-        }
-        d = append(d, c)
+		c, err := game.GetCardByName(n)
+		if err != nil {
+			return nil, err
+		}
+		d = append(d, c)
 	}
-    
-    return &Deck{d}, nil
+
+	return &Deck{d}, nil
 }
 
 func (game *Game) GetCardByName(name string) (Card, error) {
-    // fmt.Println("Card Index: ", game.cardIndex)
-    
-    for _, c := range game.cardIndex {
-			// fmt.Println(n, " == ", c.Name())
-			if name == c.Name() {
-                return c, nil
-				// fmt.Println("old: ", &c, "new: ", &newCard)
-                break
-            } else {
-                continue
-            }
-            // TODO: Error Card Not Found
+	// fmt.Println("Card Index: ", game.cardIndex)
+
+	for _, c := range game.cardIndex {
+		// fmt.Println(n, " == ", c.Name())
+		if name == c.Name() {
+			return c, nil
+			// fmt.Println("old: ", &c, "new: ", &newCard)
+			break
+		} else {
+			continue
 		}
-    
+		// TODO: Error Card Not Found
+	}
+
 	return nil, nil
 }
 

@@ -15,9 +15,9 @@ func main() {
 	p1 := hssim.NewHumanPlayer()
 	game, _ := hssim.NewGame(p0, p1)
 
-    game.LoadCardsFromJsonFile("cards.json")
+	game.LoadCardsFromJsonFile("cards.json")
 
-    game.LoadDeck("deck.csv")
+	game.LoadDeck("deck.csv")
 	//fmt.Println(err)
 
 	//fmt.Println(game)

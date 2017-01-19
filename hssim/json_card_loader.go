@@ -124,8 +124,8 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 			// fmt.Println(weapon)
 		}
 	}
-    
-    // fmt.Println("Card Index: ", game.cardIndex)
+
+	// fmt.Println("Card Index: ", game.cardIndex)
 
 	return nil
 }
