@@ -8,6 +8,6 @@ func (player HumanPlayer) InputType() InputType {
 }
 
 func NewHumanPlayer() *HumanPlayer {
-	rv := new(HumanPlayer)
+    rv := new(HumanPlayer)
 	return rv
 }
