@@ -2,7 +2,7 @@ package hssim
 
 import (
 	"encoding/csv"
-	"fmt"
+	// "fmt"
 	"math/rand"
 	"os"
 )
@@ -91,12 +91,23 @@ func (game *Game) LoadDeck(csvPath string) (*Deck, error) {
 	for _, n := range rec {
 		// fmt.Println(n)
 		// fmt.Println(game.cardIndex)
-		for _, c := range game.cardIndex {
+        c,  err := game.GetCardByName(n)
+        if err != nil {
+            return nil, err
+        }
+        d = append(d, c)
+	}
+    
+    return &Deck{d}, nil
+}
+
+func (game *Game) GetCardByName(name string) (Card, error) {
+    // fmt.Println("Card Index: ", game.cardIndex)
+    
+    for _, c := range game.cardIndex {
 			// fmt.Println(n, " == ", c.Name())
-			if n == c.Name() {
-				var newCard Card
-				newCard = c
-				d = append(d, newCard)
+			if name == c.Name() {
+                return c, nil
 				// fmt.Println("old: ", &c, "new: ", &newCard)
                 break
             } else {
@@ -104,13 +115,7 @@ func (game *Game) LoadDeck(csvPath string) (*Deck, error) {
             }
             // TODO: Error Card Not Found
 		}
-	}
     
-	return nil, nil
-}
-
-func (game *Game) GetCardByName(name string) (Card, error) {
-    // fmt.Println("Card Index: ", game.cardIndex)
 	return nil, nil
 }
 

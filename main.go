@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/jmmaloney4/hssim/hssim"
 	"math/rand"
 	"time"
@@ -17,10 +17,8 @@ func main() {
 
     game.LoadCardsFromJsonFile("cards.json")
 
-	game.GetCardByName("")
+    game.LoadDeck("deck.csv")
+	//fmt.Println(err)
 
-	_, err := game.LoadDeck("deck.csv")
-	fmt.Println(err)
-
-	fmt.Println(game)
+	//fmt.Println(game)
 }
