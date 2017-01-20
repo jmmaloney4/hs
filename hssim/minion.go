@@ -1,10 +1,15 @@
+// Copyright (C) 2017 Jack Maloney. All Rights Reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 package hssim
 
 import (
-    "bytes"
-    "strconv"
-    // "fmt"
-    )
+	"bytes"
+	"strconv"
+	// "fmt"
+)
 
 type MinionCard interface {
 	Card
@@ -52,40 +57,23 @@ func (card BasicMinionCard) Taunt() bool {
 
 func (card BasicMinionCard) String() string {
 	var buf bytes.Buffer
-    
-    buf.WriteString(card.Name())
-    buf.WriteString(" (")
-    buf.WriteString(strconv.Itoa(int(card.Cost())))
-    buf.WriteString(" Mana, ")
-    buf.WriteString(strconv.Itoa(card.Attack()))
-    buf.WriteString("/")
-    buf.WriteString(strconv.Itoa(card.Health()))
-    if card.Race() != MinionRaceNeutral {
-        buf.WriteString(", ")
-        switch card.Race() {
-            case MinionRaceBeast:
-            buf.WriteString("Beast")
-            case MinionRaceDemon:
-            buf.WriteString("Demon")
-            case MinionRaceDragon:
-            buf.WriteString("Dragon")
-            case MinionRaceMech:
-            buf.WriteString("Mech")
-            case MinionRaceMurloc:
-            buf.WriteString("Murloc")
-            case MinionRacePirate:
-            buf.WriteString("Pirate")
-            case MinionRaceTotem:
-            buf.WriteString("Totem")
-            default:
-            panic("Expected A Valid Minion Race")
-        }
-    }
-    if card.Text() != "" {
-        buf.WriteString(", ")
-        buf.WriteString(card.Text())
-    }
-    buf.WriteString(")")
-    
-    return buf.String()
+
+	buf.WriteString(card.Name())
+	buf.WriteString(" (")
+	buf.WriteString(strconv.Itoa(int(card.Cost())))
+	buf.WriteString(" Mana, ")
+	buf.WriteString(strconv.Itoa(card.Attack()))
+	buf.WriteString("/")
+	buf.WriteString(strconv.Itoa(card.Health()))
+	if card.Race() != MinionRaceNeutral {
+		buf.WriteString(", ")
+        buf.WriteString(StringFromMinionRace(card.Race()))
+	}
+	if card.Text() != "" {
+		buf.WriteString(", ")
+		buf.WriteString(card.Text())
+	}
+	buf.WriteString(")")
+
+	return buf.String()
 }

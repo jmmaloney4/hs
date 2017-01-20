@@ -1,3 +1,8 @@
+// Copyright (C) 2017 Jack Maloney. All Rights Reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 package hssim
 
 import (
@@ -50,6 +55,7 @@ type Player interface {
 	LoadDeck(csvPath string, game *Game) error
 
 	Mulligan(gofirst bool) error
+	StartTurn() error
 }
 
 type Game struct {
@@ -101,6 +107,9 @@ func (game *Game) GetCardByName(name string) (Card, error) {
 func (game *Game) StartGame() {
 	game.players[0].Mulligan(true)
 	game.players[1].Mulligan(false)
+
+	game.players[0].StartTurn()
+	game.players[0].StartTurn()
 }
 
 func NewGame(p0 Player, p1 Player) (*Game, error) {

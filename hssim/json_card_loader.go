@@ -1,10 +1,15 @@
+// Copyright (C) 2017 Jack Maloney. All Rights Reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 package hssim
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-    "strings"
+	"strings"
 )
 
 type JsonCard struct {
@@ -32,31 +37,6 @@ type JsonCard struct {
 	Durability int
 }
 
-func DecodeClass(cls string) Class {
-	switch cls {
-	case "DRUID":
-		return ClassDruid
-	case "HUNTER":
-		return ClassHunter
-	case "MAGE":
-		return ClassMage
-	case "PALADIN":
-		return ClassPaladin
-	case "PRIEST":
-		return ClassPriest
-	case "ROUGE":
-		return ClassRouge
-	case "SHAMAN":
-		return ClassShaman
-	case "WARLOCK":
-		return ClassWarlock
-	case "WARRIOR":
-		return ClassWarrior
-	default:
-		return ClassNeutral
-	}
-}
-
 func (game *Game) LoadCardsFromJsonFile(path string) error {
 	// read JSON file
 	file, err := ioutil.ReadFile(path)
@@ -76,7 +56,7 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 			basicSet = append(basicSet, c)
 			if c.Type == "WEAPON" {
 				//fmt.Println(c)
-                // fmt.Println(c.Text)
+				// fmt.Println(c.Text)
 			}
 			count++
 		}
@@ -85,29 +65,11 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 	game.cardIndex = make([]Card, 0)
 
 	for _, c := range basicSet {
-		abs := AbstractCard{id: c.ID, name: c.Name, class: DecodeClass(c.PlayerClass), cost: c.Cost, text: strings.Replace(c.Text, "\n", " ", -1)}
-        
+		abs := AbstractCard{id: c.ID, name: c.Name, class: ClassFromString(c.PlayerClass), cost: c.Cost, text: strings.Replace(c.Text, "\n", " ", -1)}
+
 		switch c.Type {
 		case "MINION":
-			minion := BasicMinionCard{abs, c.Attack, c.Health, 0, false}
-			switch c.Race {
-			case "BEAST":
-				minion.race = MinionRaceBeast
-			case "DEMON":
-				minion.race = MinionRaceDemon
-			case "DRAGON":
-				minion.race = MinionRaceDragon
-			case "MECHANICAL":
-				minion.race = MinionRaceMech
-			case "MURLOC":
-				minion.race = MinionRaceMurloc
-			case "PIRATE":
-				minion.race = MinionRacePirate
-			case "TOTEM":
-				minion.race = MinionRaceTotem
-			default:
-				minion.race = MinionRaceNeutral
-			}
+			minion := BasicMinionCard{abs, c.Attack, c.Health, MinionRaceFromString(c.Race), false}
 			for _, m := range c.Mechanics {
 				switch m {
 				case "TAUNT":
@@ -129,9 +91,9 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 
 	// fmt.Println("Card Index: ", game.cardIndex)
 
-    for i, c := range game.cardIndex {
-        fmt.Println(i, c)
-    }
-    
+	for i, c := range game.cardIndex {
+		fmt.Println(i, c)
+	}
+
 	return nil
 }

@@ -1,10 +1,15 @@
+// Copyright (C) 2017 Jack Maloney. All Rights Reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 package hssim
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
-    "os"
-    "bufio"
+	"os"
 )
 
 type HumanPlayer struct {
@@ -79,33 +84,38 @@ func (player HumanPlayer) Mulligan(gofirst bool) error {
 	fmt.Println("Player ", pn, " Mulligan:")
 	for i, _ := range player.hand {
 		player.hand[i] = player.deck.Draw()
-        fmt.Println(player.hand[i])
+		fmt.Println(player.hand[i])
 	}
-    
-    r := bufio.NewReader(os.Stdin)
-    
-    for i, c := range player.hand {
-        fmt.Print("Mulligan the ", c.Name(), "? [Y/n]: ")
-        rune, _, err := r.ReadRune()
-        if err != nil {
-            return err
-        } else if rune == 'y' || rune == 'Y' {
-            nc := player.deck.Draw()
-            player.deck.contents = append(player.deck.contents, c)
-            player.hand[i] = nc
-        }
-        r.ReadLine()
-    }
-    
-    fmt.Println("Final Hand: ")
-    for i, _ := range player.hand {
-        fmt.Println(player.hand[i])
-    }
-    
-    fmt.Print("End Turn")
-    r.ReadLine()
-    
-    fmt.Print("\n")
 
-    return nil
+	r := bufio.NewReader(os.Stdin)
+
+	for i, c := range player.hand {
+		fmt.Print("Mulligan the ", c.Name(), "? [Y/n]: ")
+		rune, _, err := r.ReadRune()
+		if err != nil {
+			return err
+		} else if rune == 'y' || rune == 'Y' {
+			nc := player.deck.Draw()
+			player.deck.contents = append(player.deck.contents, c)
+			player.hand[i] = nc
+		}
+		r.ReadLine()
+	}
+
+	fmt.Println("Final Hand: ")
+	for i, _ := range player.hand {
+		fmt.Println(player.hand[i])
+	}
+
+	fmt.Print("End Turn")
+	r.ReadLine()
+
+	fmt.Print("\n")
+
+	return nil
+}
+
+func (player HumanPlayer) StartTurn() error {
+
+	return nil
 }
