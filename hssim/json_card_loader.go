@@ -2,7 +2,7 @@ package hssim
 
 import (
 	"encoding/json"
-	// "fmt"
+	"fmt"
 	"io/ioutil"
 )
 
@@ -75,6 +75,7 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 			basicSet = append(basicSet, c)
 			if c.Type == "WEAPON" {
 				//fmt.Println(c)
+                // fmt.Println(c.Text)
 			}
 			count++
 		}
@@ -127,5 +128,9 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 
 	// fmt.Println("Card Index: ", game.cardIndex)
 
+    for i, c := range game.cardIndex {
+        fmt.Println(i, c)
+    }
+    
 	return nil
 }

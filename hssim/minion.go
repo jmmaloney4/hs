@@ -1,5 +1,11 @@
 package hssim
 
+import (
+    "bytes"
+    "strconv"
+    // "fmt"
+    )
+
 type MinionCard interface {
 	Card
 	Attact() int
@@ -42,4 +48,44 @@ func (card BasicMinionCard) Race() MinionRace {
 
 func (card BasicMinionCard) Taunt() bool {
 	return card.taunt
+}
+
+func (card BasicMinionCard) String() string {
+	var buf bytes.Buffer
+    
+    buf.WriteString(card.Name())
+    buf.WriteString(" (")
+    buf.WriteString(strconv.Itoa(int(card.Cost())))
+    buf.WriteString(" Mana, ")
+    buf.WriteString(strconv.Itoa(card.Attack()))
+    buf.WriteString("/")
+    buf.WriteString(strconv.Itoa(card.Health()))
+    if card.Race() != MinionRaceNeutral {
+        buf.WriteString(", ")
+        switch card.Race() {
+            case MinionRaceBeast:
+            buf.WriteString("Beast")
+            case MinionRaceDemon:
+            buf.WriteString("Demon")
+            case MinionRaceDragon:
+            buf.WriteString("Dragon")
+            case MinionRaceMech:
+            buf.WriteString("Mech")
+            case MinionRaceMurloc:
+            buf.WriteString("Murloc")
+            case MinionRacePirate:
+            buf.WriteString("Pirate")
+            case MinionRaceTotem:
+            buf.WriteString("Totem")
+            default:
+            panic("Expected A Valid Minion Race")
+        }
+    }
+    if card.Text() != "" {
+        buf.WriteString(", ")
+        buf.WriteString(card.Text())
+    }
+    buf.WriteString(")")
+    
+    return buf.String()
 }

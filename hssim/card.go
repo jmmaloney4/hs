@@ -40,5 +40,5 @@ func (card AbstractCard) Cost() uint {
 }
 
 func (card AbstractCard) Text() string {
-	return card.name
+	return card.text
 }

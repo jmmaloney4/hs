@@ -40,7 +40,6 @@ func (player *HumanPlayer) LoadDeck(csvPath string, game *Game) error {
 	if err != nil {
 		return err
 	}
-	// fmt.Println(rec)
 
 	d := make([]Card, 0)
 
@@ -80,7 +79,7 @@ func (player HumanPlayer) Mulligan(gofirst bool) error {
 	fmt.Println("Player ", pn, " Mulligan:")
 	for i, _ := range player.hand {
 		player.hand[i] = player.deck.Draw()
-        fmt.Println(player.hand[i].Name(), "(", player.hand[i].Cost(), "Mana )")
+        fmt.Println(player.hand[i])
 	}
     
     r := bufio.NewReader(os.Stdin)
@@ -92,7 +91,6 @@ func (player HumanPlayer) Mulligan(gofirst bool) error {
             return err
         } else if rune == 'y' || rune == 'Y' {
             nc := player.deck.Draw()
-            // fmt.Println("Drew a(n)", nc.Name(), "instead")
             player.deck.contents = append(player.deck.contents, c)
             player.hand[i] = nc
         }
@@ -101,7 +99,7 @@ func (player HumanPlayer) Mulligan(gofirst bool) error {
     
     fmt.Println("Final Hand: ")
     for i, _ := range player.hand {
-        fmt.Println(player.hand[i].Name(), "(", player.hand[i].Cost(), "Mana )")
+        fmt.Println(player.hand[i])
     }
     
     fmt.Print("End Turn")
