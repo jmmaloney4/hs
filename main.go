@@ -21,7 +21,7 @@ func main() {
 	p1.LoadDeck("deck.csv", game)
 	//fmt.Println(err)
 
-	game.StartGame()
+	// game.StartGame()
 
 	//fmt.Println(game)
 }

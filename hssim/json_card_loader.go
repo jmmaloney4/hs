@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+    "strings"
 )
 
 type JsonCard struct {
@@ -84,8 +85,8 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 	game.cardIndex = make([]Card, 0)
 
 	for _, c := range basicSet {
-		abs := AbstractCard{id: c.ID, name: c.Name, class: DecodeClass(c.PlayerClass), cost: c.Cost, text: c.Text}
-
+		abs := AbstractCard{id: c.ID, name: c.Name, class: DecodeClass(c.PlayerClass), cost: c.Cost, text: strings.Replace(c.Text, "\n", " ", -1)}
+        
 		switch c.Type {
 		case "MINION":
 			minion := BasicMinionCard{abs, c.Attack, c.Health, 0, false}
