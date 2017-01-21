@@ -49,13 +49,18 @@ const (
 
 type Player interface {
 	InputType() InputType
-	Deck() *Deck
-	Hand() *[]Card
+	Deck() Deck
+	Hand() []Card
+
+	GoFirst() bool
 
 	LoadDeck(csvPath string, game *Game) error
 
-	Mulligan(gofirst bool) error
-	StartTurn() error
+	MulliganInitialHand(game *Game, hand []Card) error
+	MulliganCard(game *Game, index int) (bool, error)
+    MulliganFinalHand(game *Game) error
+    
+    EndTurn(game *Game) error
 }
 
 type Game struct {
@@ -86,6 +91,10 @@ func (deck Deck) Draw() Card {
 	return rv
 }
 
+func (deck Deck) ShuffleIn(c Card) {
+
+}
+
 func (game *Game) GetCardByName(name string) (Card, error) {
 	// fmt.Println("Card Index: ", game.cardIndex)
 
@@ -105,11 +114,37 @@ func (game *Game) GetCardByName(name string) (Card, error) {
 }
 
 func (game *Game) StartGame() {
-	game.players[0].Mulligan(true)
-	game.players[1].Mulligan(false)
+    game.RunMulliganForPlayer(game.players[0])
+    game.RunMulliganForPlayer(game.players[1])
+}
 
-	game.players[0].StartTurn()
-	game.players[0].StartTurn()
+func (game *Game) RunMulliganForPlayer(player Player) error {
+	var cards int
+	if player.GoFirst() {
+		cards = 3
+	} else {
+		cards = 4
+	}
+
+	h := make([]Card, cards)
+	for i, _ := range h {
+		h[i] = player.Deck().Draw()
+	}
+
+	player.MulliganInitialHand(game, h)
+
+	for i, c := range player.Hand() {
+		b, _ := player.MulliganCard(game, i)
+		if b {
+			player.Hand()[i] = player.Deck().Draw()
+			player.Deck().ShuffleIn(c)
+		}
+	}
+    
+    player.MulliganFinalHand(game)
+    player.EndTurn(game)
+
+	return nil
 }
 
 func NewGame(p0 Player, p1 Player) (*Game, error) {

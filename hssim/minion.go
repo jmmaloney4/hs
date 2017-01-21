@@ -67,7 +67,7 @@ func (card BasicMinionCard) String() string {
 	buf.WriteString(strconv.Itoa(card.Health()))
 	if card.Race() != MinionRaceNeutral {
 		buf.WriteString(", ")
-        buf.WriteString(StringFromMinionRace(card.Race()))
+		buf.WriteString(StringFromMinionRace(card.Race()))
 	}
 	if card.Text() != "" {
 		buf.WriteString(", ")

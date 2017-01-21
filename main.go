@@ -16,8 +16,8 @@ func main() {
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
-	p0 := hssim.NewHumanPlayer()
-	p1 := hssim.NewHumanPlayer()
+	p0 := hssim.NewHumanPlayer(true)
+	p1 := hssim.NewHumanPlayer(false)
 	game, _ := hssim.NewGame(p0, p1)
 
 	game.LoadCardsFromJsonFile("cards.json")
