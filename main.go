@@ -22,8 +22,10 @@ func main() {
 
 	game.LoadCardsFromJsonFile("cards.json")
 
-	p0.LoadDeck("deck.csv", game)
-	p1.LoadDeck("deck.csv", game)
+	d, _ := hssim.DeckFromCSV("deck.csv", game)
+	p0.SetDeck(d)
+	d, _ = hssim.DeckFromCSV("deck.csv", game)
+	p1.SetDeck(d)
 	//fmt.Println(err)
 
 	game.StartGame()

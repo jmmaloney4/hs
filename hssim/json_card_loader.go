@@ -7,7 +7,7 @@ package hssim
 
 import (
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -90,10 +90,11 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 	}
 
 	// fmt.Println("Card Index: ", game.cardIndex)
-
-	for i, c := range game.cardIndex {
-		fmt.Println(i, c)
-	}
+	/*
+		for i, c := range game.cardIndex {
+			fmt.Println(i, c)
+		}
+	*/
 
 	return nil
 }

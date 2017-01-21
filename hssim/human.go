@@ -7,7 +7,6 @@ package hssim
 
 import (
 	"bufio"
-	"encoding/csv"
 	"fmt"
 	"os"
 )
@@ -28,8 +27,12 @@ func NewHumanPlayer(first bool) *HumanPlayer {
 	return rv
 }
 
-func (player HumanPlayer) Deck() Deck {
-	return player.deck
+func (player HumanPlayer) Deck() *Deck {
+	return &player.deck
+}
+
+func (player *HumanPlayer) SetDeck(d Deck) {
+	player.deck = d
 }
 
 func (player HumanPlayer) Hand() []Card {
@@ -61,113 +64,32 @@ func (player *HumanPlayer) MulliganInitialHand(game *Game, hand []Card) error {
 
 func (player *HumanPlayer) MulliganCard(game *Game, index int) (bool, error) {
 	r := bufio.NewReader(os.Stdin)
-    fmt.Print("Mulligan the ", player.Hand()[index].Name(), "? [Y/n]: ")
+	fmt.Print("Mulligan the ", player.Hand()[index].Name(), "? [Y/n]: ")
 	rune, _, err := r.ReadRune()
-    defer r.ReadLine()
+	defer r.ReadLine()
 	if err != nil {
 		return false, err
 	} else if rune == 'y' || rune == 'Y' {
 		return true, nil
-    } else {
-        return false, nil
-    }
+	} else {
+		return false, nil
+	}
 }
 
 func (player *HumanPlayer) MulliganFinalHand(game *Game) error {
-    fmt.Println("Starting Hand:")
-    for i, _ := range player.Hand() {
-        fmt.Println(player.Hand()[i])
+	fmt.Println("Starting Hand:")
+	for i, _ := range player.Hand() {
+		fmt.Println(player.Hand()[i])
 	}
-    
-    return nil
-}
-
-func (player *HumanPlayer) EndTurn(game *Game) error {
-    fmt.Print("End Turn")
-    r := bufio.NewReader(os.Stdin)
-    r.ReadLine()
-    fmt.Print("\n")
-    return nil
-}
-
-func (player *HumanPlayer) LoadDeck(csvPath string, game *Game) error {
-	file, err := os.Open(csvPath)
-	if err != nil {
-		return err
-	}
-
-	r := csv.NewReader(file)
-	rec, err := r.Read()
-	if err != nil {
-		return err
-	}
-
-	d := make([]Card, 0)
-
-	for _, n := range rec {
-		// fmt.Println(n)
-		// fmt.Println(game.cardIndex)
-		c, err := game.GetCardByName(n)
-		if err != nil {
-			return err
-		}
-		d = append(d, c)
-	}
-
-	player.deck = Deck{d}
 
 	return nil
 }
 
-func (player HumanPlayer) Mulligan(gofirst bool) error {
-
-	var cards int
-	if gofirst {
-		cards = 3
-	} else {
-		cards = 4
-	}
-
-	player.hand = make([]Card, cards)
-
-	var pn int
-	if gofirst {
-		pn = 1
-	} else {
-		pn = 2
-	}
-
-	fmt.Println("Player ", pn, " Mulligan:")
-	for i, _ := range player.hand {
-		player.hand[i] = player.deck.Draw()
-		fmt.Println(player.hand[i])
-	}
-
-	r := bufio.NewReader(os.Stdin)
-
-	for i, c := range player.hand {
-		fmt.Print("Mulligan the ", c.Name(), "? [Y/n]: ")
-		rune, _, err := r.ReadRune()
-		if err != nil {
-			return err
-		} else if rune == 'y' || rune == 'Y' {
-			nc := player.deck.Draw()
-			player.deck.contents = append(player.deck.contents, c)
-			player.hand[i] = nc
-		}
-		r.ReadLine()
-	}
-
-	fmt.Println("Final Hand: ")
-	for i, _ := range player.hand {
-		fmt.Println(player.hand[i])
-	}
-
+func (player *HumanPlayer) EndTurn(game *Game) error {
 	fmt.Print("End Turn")
+	r := bufio.NewReader(os.Stdin)
 	r.ReadLine()
-
 	fmt.Print("\n")
-
 	return nil
 }
 

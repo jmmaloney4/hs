@@ -6,8 +6,7 @@
 package hssim
 
 import (
-	// "fmt"
-	"math/rand"
+// "fmt"
 )
 
 type InputType int
@@ -49,50 +48,33 @@ const (
 
 type Player interface {
 	InputType() InputType
-	Deck() Deck
+	Deck() *Deck
+	SetDeck(d Deck)
 	Hand() []Card
 
 	GoFirst() bool
 
-	LoadDeck(csvPath string, game *Game) error
+	// LoadDeck(csvPath string, game *Game) error
+
+	/*
+	   // Max Potential Mana
+	   TotalMana() int
+	   // Mana avaliable right now
+	   AvaliableMana() int
+	   // Mana locked by overloads last turn
+	   LockedMana() int
+	*/
 
 	MulliganInitialHand(game *Game, hand []Card) error
 	MulliganCard(game *Game, index int) (bool, error)
-    MulliganFinalHand(game *Game) error
-    
-    EndTurn(game *Game) error
+	MulliganFinalHand(game *Game) error
+
+	EndTurn(game *Game) error
 }
 
 type Game struct {
 	players   []Player
 	cardIndex []Card
-}
-
-type Deck struct {
-	contents []Card
-}
-
-func (deck Deck) Draw() Card {
-	r := rand.Int()
-	if r < 0 {
-		r = r * -1
-	}
-
-	r %= len(deck.contents)
-	rv := deck.contents[r]
-
-	nc := make([]Card, 0, len(deck.contents)-1)
-	for i, c := range deck.contents {
-		if i != r {
-			nc = append(nc, c)
-		}
-	}
-
-	return rv
-}
-
-func (deck Deck) ShuffleIn(c Card) {
-
 }
 
 func (game *Game) GetCardByName(name string) (Card, error) {
@@ -114,8 +96,8 @@ func (game *Game) GetCardByName(name string) (Card, error) {
 }
 
 func (game *Game) StartGame() {
-    game.RunMulliganForPlayer(game.players[0])
-    game.RunMulliganForPlayer(game.players[1])
+	game.RunMulliganForPlayer(game.players[0])
+	game.RunMulliganForPlayer(game.players[1])
 }
 
 func (game *Game) RunMulliganForPlayer(player Player) error {
@@ -140,9 +122,9 @@ func (game *Game) RunMulliganForPlayer(player Player) error {
 			player.Deck().ShuffleIn(c)
 		}
 	}
-    
-    player.MulliganFinalHand(game)
-    player.EndTurn(game)
+
+	player.MulliganFinalHand(game)
+	player.EndTurn(game)
 
 	return nil
 }
