@@ -9,21 +9,11 @@ import (
 // "fmt"
 )
 
-type InputType int
-type CardType int
 type Class int
-type MinionRace int
 
 const (
 	HAND_SIZE_DEFAULT int = 10
 	DECK_SIZE_DEFAULT int = 30
-
-	InputTypeCommandLine InputType = iota
-	InputTypeBot
-
-	CardTypeMinion CardType = iota
-	CardTypeSpell
-	CardTypeWeapon
 
 	ClassNeutral Class = iota
 	ClassDruid
@@ -35,56 +25,30 @@ const (
 	ClassShaman
 	ClassWarlock
 	ClassWarrior
-
-	MinionRaceNeutral MinionRace = iota
-	MinionRaceBeast
-	MinionRaceDemon
-	MinionRaceDragon
-	MinionRaceMech
-	MinionRaceMurloc
-	MinionRacePirate
-	MinionRaceTotem
 )
-
-type Player interface {
-	InputType() InputType
-	Deck() *Deck
-	SetDeck(d Deck)
-	Hand() []Card
-
-	GoFirst() bool
-
-	// LoadDeck(csvPath string, game *Game) error
-
-	// Max Potential Mana
-	TotalMana() int
-	// Mana available right now
-	AvailableMana() int
-	// Mana locked by overloads last turn
-	LockedMana() int
-	// Mana to be locked next turn
-	OverloadedMana() int
-
-	SpendMana(n int)
-	Overload(n int)
-
-	MulliganInitialHand(game *Game, hand []Card) error
-	MulliganCard(game *Game, index int) (bool, error)
-	MulliganFinalHand(game *Game) error
-
-	EndTurn(game *Game) error
-
-	// StartTurn(game *Game, num int) error
-}
 
 type Game struct {
 	players []Player
+
+	// turn 0 is mulligan p1
+	// turn 1 is mulligan p2
+	// turn 2 is p1 turn 1
+	// turn 3 is p2 turn 1
+	// etc
+	turn int
 }
 
 func (game *Game) StartGame() {
+	game.turn = 0
 	game.RunMulliganForPlayer(game.players[0])
+	game.turn++
 	game.RunMulliganForPlayer(game.players[1])
+    game.turn++
+    game.BeginTurnForPlayer(game.players[0], game.Turn())
+}
 
+func (game Game) Turn() int {
+    return game.turn
 }
 
 func (game *Game) RunMulliganForPlayer(player Player) error {
@@ -114,6 +78,16 @@ func (game *Game) RunMulliganForPlayer(player Player) error {
 	player.EndTurn(game)
 
 	return nil
+}
+
+func (game *Game) BeginTurnForPlayer(player Player, turn int) error {
+    player.BeginTurn(game)
+    
+    c := player.Deck().Draw()
+    
+    player.AddCardToHand(game, c)
+    
+    return nil
 }
 
 func NewGame(p0 Player, p1 Player) (*Game, error) {

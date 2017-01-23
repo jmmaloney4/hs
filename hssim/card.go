@@ -5,6 +5,14 @@
 
 package hssim
 
+type CardType int
+
+const (
+	CardTypeMinion CardType = iota
+	CardTypeSpell
+	CardTypeWeapon
+)
+
 type Card interface {
 	Name() string
 	ID() string

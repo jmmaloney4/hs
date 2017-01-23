@@ -52,7 +52,7 @@ func DeckFromCSV(csvPath string, game *Game) (Deck, error) {
 		return Deck{nil}, err
 	}
 
-	d := make([]Card, 0)
+	d := make([]Card, 0, len(rec))
 
 	for _, n := range rec {
 		// fmt.Println(n)

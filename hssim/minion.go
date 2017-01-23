@@ -11,6 +11,19 @@ import (
 	// "fmt"
 )
 
+type MinionRace int
+
+const (
+	MinionRaceNeutral MinionRace = iota
+	MinionRaceBeast
+	MinionRaceDemon
+	MinionRaceDragon
+	MinionRaceMech
+	MinionRaceMurloc
+	MinionRacePirate
+	MinionRaceTotem
+)
+
 type MinionCard interface {
 	Card
 	Attact() int

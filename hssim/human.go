@@ -15,14 +15,10 @@ type HumanPlayer struct {
 	hand           []Card
 	deck           Deck
 	first          bool
-	totalMana      int
+	baseMana       int
 	lockedMana     int
 	overloadedMana int
 	availableMana  int
-}
-
-func (player HumanPlayer) InputType() InputType {
-	return InputTypeCommandLine
 }
 
 func NewHumanPlayer(first bool) *HumanPlayer {
@@ -47,8 +43,8 @@ func (player HumanPlayer) GoFirst() bool {
 	return player.first
 }
 
-func (player HumanPlayer) TotalMana() int {
-	return player.totalMana
+func (player HumanPlayer) BaseMana() int {
+	return player.baseMana
 }
 
 func (player HumanPlayer) AvailableMana() int {
@@ -121,7 +117,15 @@ func (player *HumanPlayer) EndTurn(game *Game) error {
 	return nil
 }
 
-func (player HumanPlayer) StartTurn() error {
-
+func (player *HumanPlayer) BeginTurn(game *Game) error {
+    fmt.Println("Starting Turn", game.Turn() / 2, "For Player", PlayerNumHumanReadable(player))
 	return nil
+}
+
+func (player *HumanPlayer) AddCardToHand(game *Game, card Card) error {
+    player.hand = append(player.hand, card)
+    
+    fmt.Println("Drew:", card)
+    
+    return nil
 }

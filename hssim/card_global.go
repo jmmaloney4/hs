@@ -65,7 +65,7 @@ func LoadGlobalCardIndexFromJsonFile(path string) error {
 		}
 	}
 
-	globalCardIndex = make([]Card, 0)
+	globalCardIndex = make([]Card, 0, len(basicSet))
 
 	for _, c := range basicSet {
 		abs := AbstractCard{id: c.ID, name: c.Name, class: ClassFromString(c.PlayerClass), cost: c.Cost, text: strings.Replace(c.Text, "\n", " ", -1)}
