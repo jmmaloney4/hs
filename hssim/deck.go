@@ -57,7 +57,7 @@ func DeckFromCSV(csvPath string, game *Game) (Deck, error) {
 	for _, n := range rec {
 		// fmt.Println(n)
 		// fmt.Println(game.cardIndex)
-		c, err := game.GetCardByName(n)
+		c, err := CardFromName(n)
 		if err != nil {
 			return Deck{nil}, err
 		}

@@ -56,48 +56,35 @@ type Player interface {
 
 	// LoadDeck(csvPath string, game *Game) error
 
-	/*
-	   // Max Potential Mana
-	   TotalMana() int
-	   // Mana avaliable right now
-	   AvaliableMana() int
-	   // Mana locked by overloads last turn
-	   LockedMana() int
-	*/
+	// Max Potential Mana
+	TotalMana() int
+	// Mana available right now
+	AvailableMana() int
+	// Mana locked by overloads last turn
+	LockedMana() int
+	// Mana to be locked next turn
+	OverloadedMana() int
+
+	SpendMana(n int)
+	Overload(n int)
 
 	MulliganInitialHand(game *Game, hand []Card) error
 	MulliganCard(game *Game, index int) (bool, error)
 	MulliganFinalHand(game *Game) error
 
 	EndTurn(game *Game) error
+
+	// StartTurn(game *Game, num int) error
 }
 
 type Game struct {
-	players   []Player
-	cardIndex []Card
-}
-
-func (game *Game) GetCardByName(name string) (Card, error) {
-	// fmt.Println("Card Index: ", game.cardIndex)
-
-	for _, c := range game.cardIndex {
-		// fmt.Println(n, " == ", c.Name())
-		if name == c.Name() {
-			return c, nil
-			// fmt.Println("old: ", &c, "new: ", &newCard)
-			break
-		} else {
-			continue
-		}
-		// TODO: Error Card Not Found
-	}
-
-	return nil, nil
+	players []Player
 }
 
 func (game *Game) StartGame() {
 	game.RunMulliganForPlayer(game.players[0])
 	game.RunMulliganForPlayer(game.players[1])
+
 }
 
 func (game *Game) RunMulliganForPlayer(player Player) error {

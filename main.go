@@ -9,6 +9,7 @@ import (
 	// "fmt"
 	"github.com/jmmaloney4/hssim/hssim"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -20,7 +21,7 @@ func main() {
 	p1 := hssim.NewHumanPlayer(false)
 	game, _ := hssim.NewGame(p0, p1)
 
-	game.LoadCardsFromJsonFile("cards.json")
+	hssim.LoadGlobalCardIndexFromJsonFile(os.Args[1])
 
 	d, _ := hssim.DeckFromCSV("deck.csv", game)
 	p0.SetDeck(d)

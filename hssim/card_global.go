@@ -8,9 +8,12 @@ package hssim
 import (
 	"encoding/json"
 	// "fmt"
+	"fmt"
 	"io/ioutil"
 	"strings"
 )
+
+var globalCardIndex []Card
 
 type JsonCard struct {
 	ID          string
@@ -37,7 +40,7 @@ type JsonCard struct {
 	Durability int
 }
 
-func (game *Game) LoadCardsFromJsonFile(path string) error {
+func LoadGlobalCardIndexFromJsonFile(path string) error {
 	// read JSON file
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -62,7 +65,7 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 		}
 	}
 
-	game.cardIndex = make([]Card, 0)
+	globalCardIndex = make([]Card, 0)
 
 	for _, c := range basicSet {
 		abs := AbstractCard{id: c.ID, name: c.Name, class: ClassFromString(c.PlayerClass), cost: c.Cost, text: strings.Replace(c.Text, "\n", " ", -1)}
@@ -77,24 +80,39 @@ func (game *Game) LoadCardsFromJsonFile(path string) error {
 				}
 			}
 			// fmt.Println(minion)
-			game.cardIndex = append(game.cardIndex, minion)
-			// fmt.Println(game.cardIndex)
+			globalCardIndex = append(globalCardIndex, minion)
+			// fmt.Println(globalCardIndex)
 		case "SPELL":
 			spell := BasicSpellCard{abs}
-			game.cardIndex = append(game.cardIndex, spell)
+			globalCardIndex = append(globalCardIndex, spell)
 		case "WEAPON":
 			weapon := BasicWeaponCard{abs, c.Attack, c.Durability}
-			game.cardIndex = append(game.cardIndex, weapon)
+			globalCardIndex = append(globalCardIndex, weapon)
 			// fmt.Println(weapon)
 		}
 	}
 
-	// fmt.Println("Card Index: ", game.cardIndex)
+	// fmt.Println("Card Index: ", globalCardIndex)
 	/*
-		for i, c := range game.cardIndex {
+		for i, c := range globalCardIndex {
 			fmt.Println(i, c)
 		}
 	*/
 
 	return nil
+}
+
+func CardFromName(name string) (Card, error) {
+	// fmt.Println("Card Index: ", game.cardIndex)
+
+	for _, c := range globalCardIndex {
+		// fmt.Println(n, " == ", c.Name())
+		if name == c.Name() {
+			return c, nil
+			// fmt.Println("old: ", &c, "new: ", &newCard)
+			break
+		}
+	}
+
+	return nil, fmt.Errorf("Card %s Not Found", name)
 }

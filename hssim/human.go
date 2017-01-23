@@ -12,9 +12,13 @@ import (
 )
 
 type HumanPlayer struct {
-	hand  []Card
-	deck  Deck
-	first bool
+	hand           []Card
+	deck           Deck
+	first          bool
+	totalMana      int
+	lockedMana     int
+	overloadedMana int
+	availableMana  int
 }
 
 func (player HumanPlayer) InputType() InputType {
@@ -41,6 +45,30 @@ func (player HumanPlayer) Hand() []Card {
 
 func (player HumanPlayer) GoFirst() bool {
 	return player.first
+}
+
+func (player HumanPlayer) TotalMana() int {
+	return player.totalMana
+}
+
+func (player HumanPlayer) AvailableMana() int {
+	return player.availableMana
+}
+
+func (player HumanPlayer) LockedMana() int {
+	return player.lockedMana
+}
+
+func (player HumanPlayer) OverloadedMana() int {
+	return player.overloadedMana
+}
+
+func (player HumanPlayer) SpendMana(n int) {
+	player.availableMana -= n
+}
+
+func (player HumanPlayer) Overload(n int) {
+	player.overloadedMana += n
 }
 
 func PlayerNumHumanReadable(player Player) int {
