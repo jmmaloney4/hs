@@ -34,5 +34,5 @@ type Player interface {
 	BeginTurn(game *Game) error
 	AddCardToHand(game *Game, card Card) error
 
-	//ChooseAction()
+	//TakeAction(game *Game) Action
 }

@@ -9,13 +9,54 @@ import (
 	"fmt"
 )
 
+/*
+
+   |   Player 0    Indexed always from left to right as though you were in the players spots
+   |  2   1   0    Index to add to
+   |    1   0      Current Index of Cards
+   | ---------------
+   |   / \ / \
+   |   \ / \ /
+   | ---------------
+   |   / \ / \ / \
+   |   \ / \ / \ /
+   | ---------------
+   |    0   1   2      Current Index of Cards
+   |  0   1   2   3    Index to insert to
+   |   Player 1
+*/
+
 type Board struct {
-	p0Side []MinionCard
-	p1Side []MinionCard
+	p0Side []Card
+	p1Side []Card
 }
 
-func (board *Board) AddMinion(card Card, index int, side int) {
+func (board *Board) AddMinion(card Card, index int, side int) error {
+	if card.Type() != CardTypeMinion {
+		return fmt.Errorf("%s is not a Minion", card.String())
+	}
 
+	var s *[]Card
+	if side == 0 {
+		s = &board.p0Side
+	} else if side == 1 {
+		s = &board.p1Side
+	} else {
+		return fmt.Errorf("Side must be either 0 or 1")
+	}
+
+	if index > len(*s) {
+		return fmt.Errorf("Index out of range")
+	}
+
+	ns := make([]Card, len(*s)+1)
+	copy(ns, (*s)[:index])
+	ns[index] = card
+	copy(ns[index+1:], (*s)[index:])
+
+	*s = ns
+
+	return nil
 }
 
 func (board *Board) GetMinionCount(side int) (int, error) {
@@ -26,4 +67,18 @@ func (board *Board) GetMinionCount(side int) (int, error) {
 	} else {
 		return 0, fmt.Errorf("Side must be either 0 or 1")
 	}
+}
+
+func (board Board) String() string {
+	rv := fmt.Sprintf("Player 0:\n")
+	for i, c := range board.p0Side {
+        rv += fmt.Sprintf("%d %s\n", i, c.String())
+	}
+
+	rv += "Player 1:\n"
+	for i, c := range board.p1Side {
+        rv += fmt.Sprintf("%d %s\n", i, c.String())
+	}
+
+	return rv
 }

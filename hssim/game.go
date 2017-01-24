@@ -6,9 +6,9 @@
 package hssim
 
 import (
-// "fmt"
-//"bufio"
-//"os"
+	"fmt"
+	//"bufio"
+	//"os"
 )
 
 type Class int
@@ -43,42 +43,28 @@ type Game struct {
 }
 
 func (game *Game) StartGame() {
-	game.turn = 0
-	game.RunMulliganForPlayer(game.players[0])
-	game.turn++
-	game.RunMulliganForPlayer(game.players[1])
-
-	game.board.p0Side = make([]MinionCard, 0)
-	game.board.p1Side = make([]MinionCard, 0)
-
-	game.turn++
-	game.BeginTurnForPlayer(game.players[0], game.Turn())
-
 	/*
-	       r := bufio.NewReader(os.Stdin)
+		    game.turn = 0
+			game.RunMulliganForPlayer(game.players[0])
+			game.turn++
+			game.RunMulliganForPlayer(game.players[1])
 
-	       fmt.Printf("Address pre draw: %p\n", game.players[0].Deck())
-	       fmt.Printf("Address pre draw: %p\n", game.players[0].Deck())
-	       fmt.Printf("Address pre draw: %p\n", game.players[0].Deck())
+			game.board.p0Side = make([]MinionCard, 0)
+			game.board.p1Side = make([]MinionCard, 0)
 
-	       for game.players[0].Deck().Size() >= 0 {
-	   		// deck := game.players[0].Deck()
-
-	           fmt.Println("Pre Draw:")
-
-	           for i, c := range game.players[0].Deck().cards {
-	   			fmt.Println(i, c)
-	   		}
-
-	           fmt.Println("Post Draw:", game.players[0].Deck().Draw())
-
-	   		for i, c := range game.players[0].Deck().cards {
-	   			fmt.Println(i, c)
-	   		}
-
-	           r.ReadLine()
-	   	}
+			game.turn++
+			game.BeginTurnForPlayer(game.players[0], game.Turn())
 	*/
+
+	game.board = Board{make([]Card, 0), make([]Card, 0)}
+	c, _ := CardFromName("Bloodfen Raptor")
+	game.board.AddMinion(c, 0, 0)
+	fmt.Println(game.board)
+    
+    game.board.AddMinion(c, 0, 1)
+    c, _ = CardFromName("River Crocolisk")
+	game.board.AddMinion(c, 1, 1)
+	fmt.Println(game.board)
 }
 
 func (game Game) Turn() int {

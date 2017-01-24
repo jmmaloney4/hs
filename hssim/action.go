@@ -7,6 +7,14 @@ package hssim
 
 type ActionType int
 
+const (
+	ActionTypePlayCard ActionType = iota
+	ActionTypeAttackWithMinion
+	ActionTypeAttackWithHero
+	ActionTypeHeroPower
+)
+
 type Action struct {
-	Type ActionType
+	Type   ActionType
+	target *Card
 }

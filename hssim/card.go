@@ -5,6 +5,10 @@
 
 package hssim
 
+import (
+	"fmt"
+)
+
 type CardType int
 
 const (
@@ -14,6 +18,8 @@ const (
 )
 
 type Card interface {
+	fmt.Stringer
+
 	Name() string
 	ID() string
 	// Set() CardSet
