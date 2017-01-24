@@ -28,6 +28,8 @@ type JsonCard struct {
 	// Artist string
 	// Flavor string
 
+    PlayRequirements map[string]int //`json:"playRequirements,omitempty"`
+
 	// Minion specific
 	Attack int // Shared with Weapon
 	Health int
@@ -51,23 +53,14 @@ func LoadGlobalCardIndexFromJsonFile(path string) error {
 	cards := []JsonCard{}
 	json.Unmarshal(file, &cards)
 
-	// Filter out Basic cardset
-	basicSet := make([]JsonCard, 0)
-	count := 0
+	globalCardIndex = make([]Card, 0)
+
 	for _, c := range cards {
-		if c.Set == "CORE" {
-			basicSet = append(basicSet, c)
-			if c.Type == "WEAPON" {
-				//fmt.Println(c)
-				// fmt.Println(c.Text)
-			}
-			count++
+		// Filter down to just the Basic cardset
+		if c.Set != "CORE" {
+			continue
 		}
-	}
 
-	globalCardIndex = make([]Card, 0, len(basicSet))
-
-	for _, c := range basicSet {
 		abs := AbstractCard{id: c.ID, name: c.Name, class: ClassFromString(c.PlayerClass), cost: c.Cost, text: strings.Replace(c.Text, "\n", " ", -1)}
 
 		switch c.Type {
