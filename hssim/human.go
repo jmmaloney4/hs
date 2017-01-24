@@ -35,7 +35,7 @@ func (player *HumanPlayer) SetDeck(d Deck) {
 	player.deck = d
 }
 
-func (player HumanPlayer) Hand() []Card {
+func (player *HumanPlayer) Hand() []Card {
 	return player.hand
 }
 

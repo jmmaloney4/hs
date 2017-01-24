@@ -93,14 +93,25 @@ func (game *Game) RunMulliganForPlayer(player Player) error {
 		cards = 4
 	}
 
-	h := make([]Card, cards)
-	for i, _ := range h {
-		h[i] = player.Deck().Draw()
+	h := make([]Card, 0, cards)
+	for i := 0; i < cards; i++ {
+		h = append(h, player.Deck().Draw())
+	}
+
+	if !player.GoFirst() {
+		coin, err := CardFromName("The Coin")
+		if err != nil {
+			return err
+		}
+		h = append(h, coin)
 	}
 
 	player.MulliganInitialHand(game, h)
 
 	for i, c := range player.Hand() {
+		if i >= 4 {
+			break
+		}
 		b, _ := player.MulliganCard(game, i)
 		if b {
 			player.Hand()[i] = player.Deck().Draw()

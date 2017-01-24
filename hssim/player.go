@@ -7,7 +7,6 @@ package hssim
 
 type Player interface {
 	Deck() *Deck
-	SetDeck(d Deck)
 	Hand() []Card
 
 	GoFirst() bool

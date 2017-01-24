@@ -6,8 +6,7 @@
 package hssim
 
 import (
-	"bytes"
-	"strconv"
+	"fmt"
 )
 
 type SpellCard interface {
@@ -19,18 +18,14 @@ type BasicSpellCard struct {
 }
 
 func (card BasicSpellCard) String() string {
-	var buf bytes.Buffer
+	rv := fmt.Sprintf("%s [%s] (%d Mana", card.Name(), card.ID(), card.Cost())
 
-	buf.WriteString(card.Name())
-	buf.WriteString(" (")
-	buf.WriteString(strconv.Itoa(int(card.Cost())))
-	buf.WriteString(" Mana")
 	if card.Text() != "" {
-		buf.WriteString(", ")
-		buf.WriteString(card.Text())
+		rv += ", "
+		rv += card.Text()
 	}
 
-	buf.WriteString(")")
+	rv += ")"
 
-	return buf.String()
+	return rv
 }
