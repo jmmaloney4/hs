@@ -72,12 +72,12 @@ func (board *Board) GetMinionCount(side int) (int, error) {
 func (board Board) String() string {
 	rv := fmt.Sprintf("Player 0:\n")
 	for i, c := range board.p0Side {
-        rv += fmt.Sprintf("%d %s\n", i, c.String())
+		rv += fmt.Sprintf("%d %s\n", i, c.String())
 	}
 
 	rv += "Player 1:\n"
 	for i, c := range board.p1Side {
-        rv += fmt.Sprintf("%d %s\n", i, c.String())
+		rv += fmt.Sprintf("%d %s\n", i, c.String())
 	}
 
 	return rv

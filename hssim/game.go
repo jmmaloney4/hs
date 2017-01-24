@@ -6,7 +6,7 @@
 package hssim
 
 import (
-	"fmt"
+	// "fmt"
 	//"bufio"
 	//"os"
 )
@@ -43,28 +43,29 @@ type Game struct {
 }
 
 func (game *Game) StartGame() {
+
+	game.turn = 0
+	game.RunMulliganForPlayer(game.players[0])
+	game.turn++
+	game.RunMulliganForPlayer(game.players[1])
+
+	game.board.p0Side = make([]Card, 0)
+	game.board.p1Side = make([]Card, 0)
+
+	game.turn++
+	game.BeginTurnForPlayer(game.players[0], game.Turn())
+
 	/*
-		    game.turn = 0
-			game.RunMulliganForPlayer(game.players[0])
-			game.turn++
-			game.RunMulliganForPlayer(game.players[1])
+	   	game.board = Board{make([]Card, 0), make([]Card, 0)}
+	   	c, _ := CardFromName("Bloodfen Raptor")
+	   	game.board.AddMinion(c, 0, 0)
+	   	fmt.Println(game.board)
 
-			game.board.p0Side = make([]MinionCard, 0)
-			game.board.p1Side = make([]MinionCard, 0)
-
-			game.turn++
-			game.BeginTurnForPlayer(game.players[0], game.Turn())
+	       game.board.AddMinion(c, 0, 1)
+	       c, _ = CardFromName("River Crocolisk")
+	   	game.board.AddMinion(c, 1, 1)
+	   	fmt.Println(game.board)
 	*/
-
-	game.board = Board{make([]Card, 0), make([]Card, 0)}
-	c, _ := CardFromName("Bloodfen Raptor")
-	game.board.AddMinion(c, 0, 0)
-	fmt.Println(game.board)
-    
-    game.board.AddMinion(c, 0, 1)
-    c, _ = CardFromName("River Crocolisk")
-	game.board.AddMinion(c, 1, 1)
-	fmt.Println(game.board)
 }
 
 func (game Game) Turn() int {
