@@ -24,13 +24,13 @@ func main() {
 
 	hssim.LoadGlobalCardIndexFromJsonFile(os.Args[1])
 
-	d, err := hssim.DeckFromCSV("deck.csv", game)
+	d, err := hssim.DeckFromCSV(os.Args[2], game)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
 	}
 	*(p0.Deck()) = d
-	d, err = hssim.DeckFromCSV("deck.csv", game)
+	d, err = hssim.DeckFromCSV(os.Args[3], game)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
