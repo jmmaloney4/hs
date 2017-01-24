@@ -33,7 +33,7 @@ type Player interface {
 	EndTurn(game *Game) error
 
 	BeginTurn(game *Game) error
-    AddCardToHand(game *Game, card Card) error
-    
-    //ChooseAction()
+	AddCardToHand(game *Game, card Card) error
+
+	//ChooseAction()
 }

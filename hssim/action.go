@@ -8,5 +8,5 @@ package hssim
 type ActionType int
 
 type Action struct {
-    type ActionType
+	Type ActionType
 }

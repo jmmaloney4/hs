@@ -92,27 +92,25 @@ func LoadGlobalCardIndexFromJsonFile(path string) error {
 		}
 	}
 
-	// fmt.Println("Card Index: ", globalCardIndex)
-	/*
-		for i, c := range globalCardIndex {
-			fmt.Println(i, c)
-		}
-	*/
-
 	return nil
 }
 
 func CardFromName(name string) (Card, error) {
-	// fmt.Println("Card Index: ", game.cardIndex)
-
 	for _, c := range globalCardIndex {
-		// fmt.Println(n, " == ", c.Name())
 		if name == c.Name() {
 			return c, nil
-			// fmt.Println("old: ", &c, "new: ", &newCard)
-			break
 		}
 	}
 
 	return nil, fmt.Errorf("Card %s Not Found", name)
+}
+
+func CardFromID(id string) (Card, error) {
+	for _, c := range globalCardIndex {
+		if id == c.ID() {
+			return c, nil
+		}
+	}
+
+	return nil, fmt.Errorf("Card %s Not Found", id)
 }

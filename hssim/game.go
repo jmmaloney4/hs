@@ -7,6 +7,8 @@ package hssim
 
 import (
 // "fmt"
+//"bufio"
+//"os"
 )
 
 type Class int
@@ -36,6 +38,8 @@ type Game struct {
 	// turn 3 is p2 turn 1
 	// etc
 	turn int
+
+	board Board
 }
 
 func (game *Game) StartGame() {
@@ -43,12 +47,42 @@ func (game *Game) StartGame() {
 	game.RunMulliganForPlayer(game.players[0])
 	game.turn++
 	game.RunMulliganForPlayer(game.players[1])
-    game.turn++
-    game.BeginTurnForPlayer(game.players[0], game.Turn())
+
+	game.board.p0Side = make([]MinionCard, 0)
+	game.board.p1Side = make([]MinionCard, 0)
+
+	game.turn++
+	game.BeginTurnForPlayer(game.players[0], game.Turn())
+
+	/*
+	       r := bufio.NewReader(os.Stdin)
+
+	       fmt.Printf("Address pre draw: %p\n", game.players[0].Deck())
+	       fmt.Printf("Address pre draw: %p\n", game.players[0].Deck())
+	       fmt.Printf("Address pre draw: %p\n", game.players[0].Deck())
+
+	       for game.players[0].Deck().Size() >= 0 {
+	   		// deck := game.players[0].Deck()
+
+	           fmt.Println("Pre Draw:")
+
+	           for i, c := range game.players[0].Deck().cards {
+	   			fmt.Println(i, c)
+	   		}
+
+	           fmt.Println("Post Draw:", game.players[0].Deck().Draw())
+
+	   		for i, c := range game.players[0].Deck().cards {
+	   			fmt.Println(i, c)
+	   		}
+
+	           r.ReadLine()
+	   	}
+	*/
 }
 
 func (game Game) Turn() int {
-    return game.turn
+	return game.turn
 }
 
 func (game *Game) RunMulliganForPlayer(player Player) error {
@@ -81,13 +115,13 @@ func (game *Game) RunMulliganForPlayer(player Player) error {
 }
 
 func (game *Game) BeginTurnForPlayer(player Player, turn int) error {
-    player.BeginTurn(game)
-    
-    c := player.Deck().Draw()
-    
-    player.AddCardToHand(game, c)
-    
-    return nil
+	player.BeginTurn(game)
+
+	c := player.Deck().Draw()
+
+	player.AddCardToHand(game, c)
+
+	return nil
 }
 
 func NewGame(p0 Player, p1 Player) (*Game, error) {

@@ -27,7 +27,7 @@ func NewHumanPlayer(first bool) *HumanPlayer {
 	return rv
 }
 
-func (player HumanPlayer) Deck() *Deck {
+func (player *HumanPlayer) Deck() *Deck {
 	return &player.deck
 }
 
@@ -118,14 +118,14 @@ func (player *HumanPlayer) EndTurn(game *Game) error {
 }
 
 func (player *HumanPlayer) BeginTurn(game *Game) error {
-    fmt.Println("Starting Turn", game.Turn() / 2, "For Player", PlayerNumHumanReadable(player))
+	fmt.Println("Starting Turn", game.Turn()/2, "For Player", PlayerNumHumanReadable(player))
 	return nil
 }
 
 func (player *HumanPlayer) AddCardToHand(game *Game, card Card) error {
-    player.hand = append(player.hand, card)
-    
-    fmt.Println("Drew:", card)
-    
-    return nil
+	player.hand = append(player.hand, card)
+
+	fmt.Println("Drew:", card)
+
+	return nil
 }

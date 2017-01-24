@@ -7,62 +7,80 @@ package hssim
 
 import (
 	"encoding/csv"
+	//"fmt"
 	"math/rand"
 	"os"
 )
 
 type Deck struct {
-	contents []Card
+	cards []Card
 }
 
 func (deck *Deck) Draw() Card {
+	if deck.Size() <= 0 {
+		return nil
+	}
+
 	r := rand.Int()
 	if r < 0 {
 		r = r * -1
 	}
 
-	r %= len(deck.contents)
-	rv := deck.contents[r]
+	r %= len(deck.cards)
+	rv := deck.cards[r]
 
-	nc := make([]Card, 0, len(deck.contents)-1)
-	for i, c := range deck.contents {
-		if i != r {
-			nc = append(nc, c)
-		}
-	}
+	copy(deck.cards[r:len(deck.cards)-1], deck.cards[r+1:])
+	deck.cards = deck.cards[:len(deck.cards)-1]
 
-	deck.contents = nc
+	/*
+		    fmt.Println("LEN:", len(deck.cards))
+
+		    for i, c := range deck.cards {
+				fmt.Println(i, c)
+			}
+	*/
 
 	return rv
 }
 
+func (deck Deck) Size() int {
+	return len(deck.cards)
+}
+
 func (deck *Deck) ShuffleIn(c Card) {
-	deck.contents = append(deck.contents, c)
+	deck.cards = append(deck.cards, c)
 }
 
 func DeckFromCSV(csvPath string, game *Game) (Deck, error) {
+	// Open File
 	file, err := os.Open(csvPath)
 	if err != nil {
 		return Deck{nil}, err
 	}
 
+	// Load File and Parse CSV
 	r := csv.NewReader(file)
 	rec, err := r.Read()
 	if err != nil {
 		return Deck{nil}, err
 	}
 
-	d := make([]Card, 0, len(rec))
+	cards := make([]Card, 0, len(rec))
 
 	for _, n := range rec {
-		// fmt.Println(n)
-		// fmt.Println(game.cardIndex)
 		c, err := CardFromName(n)
 		if err != nil {
 			return Deck{nil}, err
 		}
-		d = append(d, c)
+		cards = append(cards, c)
 	}
 
-	return Deck{d}, nil
+	/*
+		fmt.Println("DECK Initial:")
+
+		for i, c := range d.cards {
+			fmt.Println(i, c)
+		}
+	*/
+	return Deck{cards}, nil
 }
