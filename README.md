@@ -1,4 +1,4 @@
-# hssim
+# hs
 
 Uses [Hearthstone JSON](https://hearthstonejson.com/)
 
