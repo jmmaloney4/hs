@@ -54,8 +54,8 @@ func (game *Game) StartGame() {
 
 	game.turn++
 	game.BeginTurnForPlayer(game.players[0], game.Turn())
-    
-    game.turn++
+
+	game.turn++
 	game.BeginTurnForPlayer(game.players[1], game.Turn())
 
 	/*

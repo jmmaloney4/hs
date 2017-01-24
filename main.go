@@ -8,7 +8,7 @@ package main
 import (
 	// "fmt"
 	"fmt"
-	"github.com/jmmaloney4/hssim/hssim"
+	"github.com/jmmaloney4/hs/hssim"
 	"math/rand"
 	"os"
 	"time"

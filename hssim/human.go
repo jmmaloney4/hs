@@ -102,7 +102,7 @@ func (player *HumanPlayer) MulliganCard(game *Game, index int) (bool, error) {
 
 func (player *HumanPlayer) MulliganFinalHand(game *Game) error {
 	fmt.Println("Starting Hand:")
-	for i, _ := range player.Hand() {
+	for i := range player.Hand() {
 		fmt.Println(player.Hand()[i])
 	}
 
@@ -130,55 +130,59 @@ func (player *HumanPlayer) AddCardToHand(game *Game, card Card) error {
 	return nil
 }
 
-func (player *HumanPlayer) ChooseCard(cards []Card) (int, error) {
-	for i, c := range cards {
-		fmt.Println(i, c)
+func (player *HumanPlayer) ChooseOption(opts []string) (int, error) {
+	for i, s := range opts {
+		fmt.Println(i, s)
 	}
 
 	rv := -1
 	for rv == -1 {
-		fmt.Printf("[0-%d]? ", len(cards)-1)
+		fmt.Printf("[0-%d]? ", len(opts)-1)
 		_, err := fmt.Scanf("%d", &rv)
 		if err != nil {
 			return -1, err
 		}
-        if rv < 0 || rv > len(cards) - 1 {
-            rv = -1
-        }
+		if rv < 0 || rv > len(opts)-1 {
+			rv = -1
+		}
 	}
 
 	return rv, nil
 }
 
+func (player *HumanPlayer) ChooseCard(cards []Card) (int, error) {
+	s := make([]string, 0)
+	for _, c := range cards {
+		s = append(s, c.String())
+	}
+
+	return player.ChooseOption(s)
+}
+
 func (player *HumanPlayer) ChooseAction(game *Game) (Action, error) {
 	fmt.Println("Choose Action:")
-	fmt.Println("0 Play a Card")
-	fmt.Println("1 Attack with a Minion")
-	fmt.Println("2 Attack with your Hero")
-	fmt.Println("3 Use your Hero Power")
-	fmt.Print("[0-3]? ")
+	opts := []string{"Play a Card", "Attack with a Minion", "Attack with your Hero", "Use your Hero Power"}
 
-	r := bufio.NewReader(os.Stdin)
-	c, err := r.ReadByte()
+	i, err := player.ChooseOption(opts)
 	if err != nil {
 		return Action{0, nil}, err
 	}
 
-	switch c {
-	case '0':
+	switch i {
+	case 0:
 		i, err := player.ChooseCard(player.Hand())
 		if err != nil {
 			return Action{0, nil}, err
 		}
 		fmt.Println("Playing", player.Hand()[i])
-	case '1':
+	case 1:
 
-	case '2':
+	case 2:
 
-	case '3':
+	case 3:
 
 	default:
-		fmt.Println(c, "is not an option")
+		fmt.Println("wtf shouldn't be here")
 		return player.ChooseAction(game)
 	}
 
