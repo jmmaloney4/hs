@@ -7,11 +7,11 @@ package main
 
 import (
 	// "fmt"
+	"fmt"
 	"github.com/jmmaloney4/hssim/hssim"
 	"math/rand"
 	"os"
 	"time"
-	// "fmt"
 )
 
 func main() {
@@ -24,10 +24,18 @@ func main() {
 
 	hssim.LoadGlobalCardIndexFromJsonFile(os.Args[1])
 
-	d, _ := hssim.DeckFromCSV("deck.csv", game)
-	p0.SetDeck(d)
-	d, _ = hssim.DeckFromCSV("deck.csv", game)
-	p1.SetDeck(d)
+	d, err := hssim.DeckFromCSV("deck.csv", game)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+	*(p0.Deck()) = d
+	d, err = hssim.DeckFromCSV("deck.csv", game)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+	*(p1.Deck()) = d
 	//fmt.Println(err)
 
 	game.StartGame()
