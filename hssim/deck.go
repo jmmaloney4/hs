@@ -32,14 +32,6 @@ func (deck *Deck) Draw() Card {
 	copy(deck.cards[r:len(deck.cards)-1], deck.cards[r+1:])
 	deck.cards = deck.cards[:len(deck.cards)-1]
 
-	/*
-		    fmt.Println("LEN:", len(deck.cards))
-
-		    for i, c := range deck.cards {
-				fmt.Println(i, c)
-			}
-	*/
-
 	return rv
 }
 
@@ -77,12 +69,5 @@ func DeckFromCSV(csvPath string, game *Game) (Deck, error) {
 		cards = append(cards, c)
 	}
 
-	/*
-		fmt.Println("DECK Initial:")
-
-		for i, c := range d.cards {
-			fmt.Println(i, c)
-		}
-	*/
 	return Deck{cards}, rerr
 }

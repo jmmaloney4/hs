@@ -54,6 +54,9 @@ func (game *Game) StartGame() {
 
 	game.turn++
 	game.BeginTurnForPlayer(game.players[0], game.Turn())
+    
+    game.turn++
+	game.BeginTurnForPlayer(game.players[1], game.Turn())
 
 	/*
 	   	game.board = Board{make([]Card, 0), make([]Card, 0)}
@@ -118,6 +121,11 @@ func (game *Game) BeginTurnForPlayer(player Player, turn int) error {
 	c := player.Deck().Draw()
 
 	player.AddCardToHand(game, c)
+
+	_, err := player.ChooseAction(game)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
