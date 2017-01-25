@@ -69,6 +69,16 @@ func (board *Board) GetMinionCount(side int) (int, error) {
 	}
 }
 
+func(board *Board) GetSide(side int) ([]Card, error) {
+    if side == 0 {
+		return board.p0Side, nil
+	} else if side == 1 {
+		return board.p1Side, nil
+	} else {
+		return nil, fmt.Errorf("Side must be either 0 or 1")
+	}
+}
+
 func (board Board) String() string {
 	rv := fmt.Sprintf("Player 0:\n")
 	for i, c := range board.p0Side {

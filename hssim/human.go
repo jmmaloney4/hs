@@ -131,6 +131,10 @@ func (player *HumanPlayer) AddCardToHand(game *Game, card Card) error {
 }
 
 func (player *HumanPlayer) ChooseOption(opts []string) (int, error) {
+    if len(opts) == 0 {
+        return -1, fmt.Errorf("No options to choose from")
+    }
+    
 	for i, s := range opts {
 		fmt.Println(i, s)
 	}
@@ -176,6 +180,17 @@ func (player *HumanPlayer) ChooseAction(game *Game) (Action, error) {
 		}
 		fmt.Println("Playing", player.Hand()[i])
 	case 1:
+        s, err := game.board.GetSide(game.WhosTurn())
+        if err != nil {
+			return Action{0, nil}, err
+		}
+        
+        i, err := player.ChooseCard(s)
+        if err != nil {
+			return Action{0, nil}, err
+		}
+        
+		fmt.Println("Attacking with", s[i])
 
 	case 2:
 

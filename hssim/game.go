@@ -135,3 +135,7 @@ func NewGame(p0 Player, p1 Player) (*Game, error) {
 	rv.players = []Player{p0, p1}
 	return rv, nil
 }
+
+func (game *Game) WhosTurn() int {
+    return game.Turn() % 2
+}
