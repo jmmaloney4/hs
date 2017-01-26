@@ -65,21 +65,25 @@ func LoadGlobalCardIndexFromJsonFile(path string) error {
 
 		switch c.Type {
 		case "MINION":
-			minion := BasicMinionCard{abs, c.Attack, c.Health, MinionRaceFromString(c.Race), false}
+			minion := AbstractMinionCard{abs, c.Attack, c.Health, c.Health, MinionRaceFromString(c.Race)}
 			for _, m := range c.Mechanics {
 				switch m {
 				case "TAUNT":
-					minion.taunt = true
+					//minion.taunt = true
 				}
 			}
-			// fmt.Println(minion)
-			globalCardIndex = append(globalCardIndex, minion)
-			// fmt.Println(globalCardIndex)
+            
+            // Create new location for card and get pointer to it
+            storage := new(AbstractMinionCard)
+            *storage = minion
+            
+            globalCardIndex = append(globalCardIndex, storage)
 		case "SPELL":
-			spell := BasicSpellCard{abs}
+			spell := AbstractSpellCard{abs}
+            
 			globalCardIndex = append(globalCardIndex, spell)
 		case "WEAPON":
-			weapon := BasicWeaponCard{abs, c.Attack, c.Durability}
+			weapon := AbstractWeaponCard{abs, c.Attack, c.Durability}
 			globalCardIndex = append(globalCardIndex, weapon)
 			// fmt.Println(weapon)
 		}

@@ -15,21 +15,21 @@ type WeaponCard interface {
 	Durability() int
 }
 
-type BasicWeaponCard struct {
+type AbstractWeaponCard struct {
 	AbstractCard
 	attack     int
 	durability int
 }
 
-func (card BasicWeaponCard) Attack() int {
+func (card AbstractWeaponCard) Attack() int {
 	return card.attack
 }
 
-func (card BasicWeaponCard) Durability() int {
+func (card AbstractWeaponCard) Durability() int {
 	return card.durability
 }
 
-func (card BasicWeaponCard) String() string {
+func (card AbstractWeaponCard) String() string {
 	rv := fmt.Sprintf("%s [%s] (%d Mana, %d/%d", card.Name(), card.ID(), card.Cost(), card.Attack(), card.Durability())
 
 	if card.Text() != "" {

@@ -13,11 +13,11 @@ type SpellCard interface {
 	Card
 }
 
-type BasicSpellCard struct {
+type AbstractSpellCard struct {
 	AbstractCard
 }
 
-func (card BasicSpellCard) String() string {
+func (card AbstractSpellCard) String() string {
 	rv := fmt.Sprintf("%s [%s] (%d Mana", card.Name(), card.ID(), card.Cost())
 
 	if card.Text() != "" {

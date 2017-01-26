@@ -46,7 +46,7 @@ func (card AbstractCard) ID() string {
 }
 
 func (card AbstractCard) Type() CardType {
-	// Just defaults to minion because there's no neutral type, in theory should be overridden
+	// Just defaults to minion because there's no neutral type, in theory this method should be overridden
 	return CardTypeMinion
 }
 
@@ -60,4 +60,8 @@ func (card AbstractCard) Cost() uint {
 
 func (card AbstractCard) Text() string {
 	return card.text
+}
+
+func (card AbstractCard) String() string {
+    return fmt.Sprintf("%v", card)
 }

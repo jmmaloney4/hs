@@ -30,7 +30,7 @@ type MinionCard interface {
 	//HasBattlecry() bool
 	//HasDeathrattle() bool
 	//HasCharge() bool
-	Taunt() bool
+	//Taunt() bool
 	//HasDivineShield() bool
 	//HasStealth() bool
 	//HasWindfury() bool
@@ -38,35 +38,36 @@ type MinionCard interface {
 	//IsScilenced() bool
 }
 
-type BasicMinionCard struct {
+type AbstractMinionCard struct {
 	AbstractCard
 	attack int
+    maxHealth int
 	health int
 	race   MinionRace
-	taunt  bool
+	//taunt  bool
 }
 
-func (card BasicMinionCard) Type() CardType {
+func (card AbstractMinionCard) Type() CardType {
 	return CardTypeMinion
 }
 
-func (card BasicMinionCard) Attack() int {
+func (card AbstractMinionCard) Attack() int {
 	return card.attack
 }
 
-func (card BasicMinionCard) Health() int {
+func (card AbstractMinionCard) Health() int {
 	return card.health
 }
 
-func (card BasicMinionCard) Race() MinionRace {
+func (card AbstractMinionCard) Race() MinionRace {
 	return card.race
 }
-
-func (card BasicMinionCard) Taunt() bool {
+/*
+func (card AbstractMinionCard) Taunt() bool {
 	return card.taunt
 }
-
-func (card BasicMinionCard) String() string {
+*/
+func (card AbstractMinionCard) String() string {
 	rv := fmt.Sprintf("%s [%s] (%d Mana, %d/%d", card.Name(), card.ID(), card.Cost(), card.Attack(), card.Health())
 
 	if card.Race() != MinionRaceNeutral {
