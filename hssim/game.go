@@ -43,21 +43,21 @@ type Game struct {
 }
 
 func (game *Game) StartGame() {
+	/*
+		game.turn = 0
+		game.RunMulliganForPlayer(game.players[0])
+		game.turn++
+		game.RunMulliganForPlayer(game.players[1])
 
-	game.turn = 0
-	game.RunMulliganForPlayer(game.players[0])
-	game.turn++
-	game.RunMulliganForPlayer(game.players[1])
+		game.board.p0Side = make([]Card, 0)
+		game.board.p1Side = make([]Card, 0)
 
-	game.board.p0Side = make([]Card, 0)
-	game.board.p1Side = make([]Card, 0)
+		game.turn++
+		game.BeginTurnForPlayer(game.players[0], game.Turn())
 
-	game.turn++
-	game.BeginTurnForPlayer(game.players[0], game.Turn())
-
-	game.turn++
-	game.BeginTurnForPlayer(game.players[1], game.Turn())
-
+		game.turn++
+		game.BeginTurnForPlayer(game.players[1], game.Turn())
+	*/
 	/*
 	   	game.board = Board{make([]Card, 0), make([]Card, 0)}
 	   	c, _ := CardFromName("Bloodfen Raptor")
@@ -137,5 +137,5 @@ func NewGame(p0 Player, p1 Player) (*Game, error) {
 }
 
 func (game *Game) WhosTurn() int {
-    return game.Turn() % 2
+	return game.Turn() % 2
 }

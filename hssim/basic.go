@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 package hssim
+
 /*
 type NewCardFunc func() Card
 
@@ -13,7 +14,7 @@ var globalIndexIDs map[string]NewCardFunc
 const numCards := 2
 
 func init() {
-    
+
 }
 
 // River Crocolisk
@@ -35,10 +36,10 @@ func NewCS2_172() *CS2_172 {
 }
 
 func NewCardFromName(name string) Card {
-    
+
 }
 
 func NewCardFromID(id string) Card {
-    
+
 }
 */

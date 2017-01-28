@@ -9,10 +9,10 @@ import (
 	"encoding/json"
 	// "fmt"
 	"fmt"
+	"github.com/jmmaloney4/hs/hssim"
 	"io/ioutil"
+	"os"
 	"strings"
-    "os"
-    "github.com/jmmaloney4/hs/hssim"
 )
 
 type JsonCard struct {
@@ -28,7 +28,7 @@ type JsonCard struct {
 	// Artist string
 	// Flavor string
 
-    PlayRequirements map[string]int
+	PlayRequirements map[string]int
 
 	// Minion specific
 	Attack int // Shared with Weapon
@@ -43,22 +43,22 @@ type JsonCard struct {
 }
 
 func main() {
-    out, err := os.Create(os.Args[1])
-    if err != nil {
-        panic(err)
-    }
+	out, err := os.Create(os.Args[1])
+	if err != nil {
+		panic(err)
+	}
 
-    // read JSON file
+	// read JSON file
 	file, err := ioutil.ReadFile("cards.json")
 	if err != nil {
-        panic(err)
+		panic(err)
 	}
 
 	// Initialize datastructure for Unmarshall to fill in
 	cards := []JsonCard{}
 	json.Unmarshal(file, &cards)
 
-    out.WriteString(fmt.Sprintf(`
+	out.WriteString(fmt.Sprintf(`
         // ------------------------------
         // GENERATED FILE
         // ------------------------------
@@ -78,23 +78,23 @@ func main() {
             globalIndexIDs := make(map[string]NewCardFunc, TotalCards)
 `, len(cards)))
 
-    for _, c := range cards {
-        out.WriteString(fmt.Sprintf("globalIndexNames[\"%s\"] = New%s;\n", strings.Replace(c.Name, "\"", "\\\"", -1), c.ID))
-        out.WriteString(fmt.Sprintf("globalIndexIDs[\"%s\"] = New%s;\n\n", c.ID, c.ID))
-    }
+	for _, c := range cards {
+		out.WriteString(fmt.Sprintf("globalIndexNames[\"%s\"] = New%s;\n", strings.Replace(c.Name, "\"", "\\\"", -1), c.ID))
+		out.WriteString(fmt.Sprintf("globalIndexIDs[\"%s\"] = New%s;\n\n", c.ID, c.ID))
+	}
 
-    out.WriteString("}\n")
+	out.WriteString("}\n")
 
-    for _, c := range cards {
-        switch c.Type {
-        case "MINION":
-            text := strings.Replace(c.Text, "\n", " ", -1)
-            text = strings.Replace(text, "\"", "\\\"", -1)
+	for _, c := range cards {
+		switch c.Type {
+		case "MINION":
+			text := strings.Replace(c.Text, "\n", " ", -1)
+			text = strings.Replace(text, "\"", "\\\"", -1)
 
-            name := strings.Replace(c.Name, "\"", "\\\"", -1)
+			name := strings.Replace(c.Name, "\"", "\\\"", -1)
 
-            out.WriteString(fmt.Sprintf("type %s struct { AbstractMinionCard; }\n", c.ID))
-            out.WriteString(fmt.Sprintf("func New%s() Card { return &%s{{{\"%s\", \"%s\", Class%s, %d, \"%s\"}, %d, %d, %d, MinionRace%s}} }\n\n", c.ID, c.ID, name, c.ID, "", c.Cost, text, c.Attack, c.Health, c.Health, hssim.StringFromMinionRace(hssim.MinionRaceFromString(c.Race))))
+			out.WriteString(fmt.Sprintf("type %s struct { AbstractMinionCard; }\n", c.ID))
+			out.WriteString(fmt.Sprintf("func New%s() Card { return &%s{{{\"%s\", \"%s\", Class%s, %d, \"%s\"}, %d, %d, %d, MinionRace%s}} }\n\n", c.ID, c.ID, name, c.ID, "", c.Cost, text, c.Attack, c.Health, c.Health, hssim.StringFromMinionRace(hssim.MinionRaceFromString(c.Race))))
 
 		case "SPELL":
 			text := strings.Replace(c.Text, "\n", " ", -1)
@@ -114,7 +114,7 @@ func main() {
 			out.WriteString(fmt.Sprintf("type %s struct { AbstractWeaponCard; }\n", c.ID))
 			out.WriteString(fmt.Sprintf("func New%s() Card { return &%s{{{\"%s\", \"%s\", Class%s, %d, \"%s\"}, %d, %d}} }\n\n", c.ID, c.ID, name, c.ID, "", c.Cost, text, c.Attack, c.Durability))
 
-        }
+		}
 
-    }
+	}
 }

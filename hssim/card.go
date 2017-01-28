@@ -63,5 +63,5 @@ func (card AbstractCard) Text() string {
 }
 
 func (card AbstractCard) String() string {
-    return fmt.Sprintf("%v", card)
+	return fmt.Sprintf("%v", card)
 }

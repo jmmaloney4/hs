@@ -10,36 +10,54 @@ import (
 	// "fmt"
 	"fmt"
 	"io/ioutil"
+	"sort"
 	"strings"
 )
 
 var globalCardIndex []Card
 
 type JsonCard struct {
-	ID          string
-	Name        string
-	Set         string
-	Type        string
-	PlayerClass string
-	Cost        uint
-	// Collectable bool
-	Mechanics []string
-	Text      string
-	// Artist string
-	// Flavor string
+	ID          string   `json:"id,omitempty"`
+	Name        string   `json:"name,omitempty"`
+	Set         string   `json:"set,omitempty"`
+	Type        string   `json:"type,omitempty"`
+	PlayerClass string   `json:"playerClass,omitempty"`
+	Cost        uint     `json:"cost,omitempty"`
+	Collectible bool     `json:"collectible,omitempty"`
+	Rarity      string   `json:"rarity,omitempty"`
+	Mechanics   []string `json:"mechanics,omitempty"`
+	Text        string   `json:"text,omitempty"`
+	Artist      string   `json:"artist,omitempty"`
+	Flavor      string   `json:"flavor,omitempty"`
 
-    PlayRequirements map[string]int //`json:"playRequirements,omitempty"`
+	//TargetingArrowText string `json:"targetingArrowText"`
+
+	PlayRequirements map[string]int `json:"playRequirements,omitempty"`
 
 	// Minion specific
-	Attack int // Shared with Weapon
-	Health int
-	Race   string
+	Attack int    `json:"attack,omitempty"` // Shared with Weapon
+	Health int    `json:"health,omitempty"`
+	Race   string `json:"race,omitempty"`
 
 	//Spell specific
 
 	//Weapon specific
 	// Borrows Attack from Minion
-	Durability int
+	Durability int `json:"durability"`
+}
+
+type JsonCards []JsonCard
+
+func (slice JsonCards) Len() int {
+	return len(slice)
+}
+
+func (slice JsonCards) Less(i, j int) bool {
+	return slice[i].Name < slice[j].Name
+}
+
+func (slice JsonCards) Swap(i, j int) {
+	slice[i], slice[j] = slice[j], slice[i]
 }
 
 func LoadGlobalCardIndexFromJsonFile(path string) error {
@@ -55,11 +73,15 @@ func LoadGlobalCardIndexFromJsonFile(path string) error {
 
 	globalCardIndex = make([]Card, 0)
 
+	all := make(JsonCards, 0)
+
 	for _, c := range cards {
 		// Filter down to just the Basic cardset
 		if c.Set != "CORE" {
 			continue
 		}
+
+		all = append(all, c)
 
 		abs := AbstractCard{id: c.ID, name: c.Name, class: ClassFromString(c.PlayerClass), cost: c.Cost, text: strings.Replace(c.Text, "\n", " ", -1)}
 
@@ -72,15 +94,15 @@ func LoadGlobalCardIndexFromJsonFile(path string) error {
 					//minion.taunt = true
 				}
 			}
-            
-            // Create new location for card and get pointer to it
-            storage := new(AbstractMinionCard)
-            *storage = minion
-            
-            globalCardIndex = append(globalCardIndex, storage)
+
+			// Create new location for card and get pointer to it
+			storage := new(AbstractMinionCard)
+			*storage = minion
+
+			globalCardIndex = append(globalCardIndex, storage)
 		case "SPELL":
 			spell := AbstractSpellCard{abs}
-            
+
 			globalCardIndex = append(globalCardIndex, spell)
 		case "WEAPON":
 			weapon := AbstractWeaponCard{abs, c.Attack, c.Durability}
@@ -88,6 +110,15 @@ func LoadGlobalCardIndexFromJsonFile(path string) error {
 			// fmt.Println(weapon)
 		}
 	}
+
+	sort.Sort(all)
+	o, err := json.MarshalIndent(all, "", "    ")
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(o[:]))
 
 	return nil
 }

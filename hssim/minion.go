@@ -40,10 +40,10 @@ type MinionCard interface {
 
 type AbstractMinionCard struct {
 	AbstractCard
-	attack int
-    maxHealth int
-	health int
-	race   MinionRace
+	attack    int
+	maxHealth int
+	health    int
+	race      MinionRace
 	//taunt  bool
 }
 
@@ -62,6 +62,7 @@ func (card AbstractMinionCard) Health() int {
 func (card AbstractMinionCard) Race() MinionRace {
 	return card.race
 }
+
 /*
 func (card AbstractMinionCard) Taunt() bool {
 	return card.taunt

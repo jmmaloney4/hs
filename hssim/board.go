@@ -69,8 +69,8 @@ func (board *Board) GetMinionCount(side int) (int, error) {
 	}
 }
 
-func(board *Board) GetSide(side int) ([]Card, error) {
-    if side == 0 {
+func (board *Board) GetSide(side int) ([]Card, error) {
+	if side == 0 {
 		return board.p0Side, nil
 	} else if side == 1 {
 		return board.p1Side, nil
