@@ -17,22 +17,22 @@ import (
 var globalCardIndex []Card
 
 type JsonCard struct {
-	ID          string   `json:"id,omitempty"`
-	Name        string   `json:"name,omitempty"`
-	Set         string   `json:"set,omitempty"`
-	Type        string   `json:"type,omitempty"`
-	PlayerClass string   `json:"playerClass,omitempty"`
-	Cost        uint     `json:"cost,omitempty"`
-	Collectible bool     `json:"collectible,omitempty"`
+	ID          string   `json:"id"`
+	Name        string   `json:"name"`
+	Set         string   `json:"set"`
+	Type        string   `json:"type"`
+	PlayerClass string   `json:"playerClass"`
+	Cost        uint     `json:"cost"`
+	Collectible bool     `json:"collectible"`
 	Rarity      string   `json:"rarity,omitempty"`
 	Mechanics   []string `json:"mechanics,omitempty"`
-	Text        string   `json:"text,omitempty"`
+	Text        string   `json:"text"`
 	Artist      string   `json:"artist,omitempty"`
 	Flavor      string   `json:"flavor,omitempty"`
 
 	//TargetingArrowText string `json:"targetingArrowText"`
 
-	PlayRequirements map[string]int `json:"playRequirements,omitempty"`
+	PlayRequirements map[string]int `json:"playRequirements"`
 
 	// Minion specific
 	Attack int    `json:"attack,omitempty"` // Shared with Weapon
@@ -43,7 +43,7 @@ type JsonCard struct {
 
 	//Weapon specific
 	// Borrows Attack from Minion
-	Durability int `json:"durability"`
+	Durability int `json:"durability,omitempty"`
 }
 
 type JsonCards []JsonCard
