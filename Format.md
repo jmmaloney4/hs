@@ -1,7 +1,9 @@
 # Field
-- `"spell"` for spell text
-- `"battlecry"` for Battlecry
-- `"deathrattle"` for Deathrattle
+- `spell` for spell text
+- `battlecry` for Battlecry
+- `deathrattle` for Deathrattle
+- `inspire` for Inspire
+- `triggers` for other triggers
 
 # Basic Format
 ```
@@ -19,7 +21,8 @@
   - `target`: Target, the target(s) to damage
   - `amount`: int, the amount of damage dealt to the target(s)
   - `spell_dmg`: bool, whether or not the damage is buffed by spell damage
-- `DRAW: [cards]`
+- `DRAW: [target, cards]`
+  - `target`: Target, either friendly hero or enemy hero, to draw cards for
   - `cards`: int, number of cards to draw
 - `DESTROY: [target]`
   - `target`: Target, the target(s) to destroy
@@ -28,6 +31,12 @@
 - `RESTORE: [target, amount]`
   - `target`: Target, the target(s) to restore health to
   - `amount`: int, the amount of health to restore to the target(s)
+- `MANA_THIS_TURN: [target, amount]`
+  - `target`: Target, either friendly hero or enemy hero, to grant bonus mana crystal(s) for a single turn
+  - `amount`: int, number of mana crystals to add
+- `ENCHANTMENT: [target, enchantment]`
+  - `target`: Target, the target to apply the enchantment to
+  - `enchantment`: string, the ID of the enchantment to apply
 
 ## Targets
 ```
@@ -49,6 +58,8 @@
 ### Groups
 - `TARGET`: The user-selected target of this spell or battlecry, restrictions defined in `playReqirements` field
 - `ADJACENT`: The minions adjacent to the target, not applicable if the target is not a minion in play
+- `WEAPON`: The weapon currently equipped to the friendly hero
+- `ENEMY_WEAPON`: The weapon currently equipped to the enemy hero
 - `HERO`: The friendly hero
 - `ENEMY_HERO`: The enemy hero
 - `BOTH_HEROS`: Both heros
@@ -58,3 +69,6 @@
 - `ALL_ENEMY_MINIONS`: All enemy minions
 - `ALL_ENEMIES`: All enemy minions and the enemy hero
 - `ALL_FRIENDLIES`: All friendly minions
+
+## Triggers
+- `ON_USE`: Only for weapons?, triggered when a hero attacks while the weapon is equipped
