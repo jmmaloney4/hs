@@ -32,11 +32,21 @@
 ## Targets
 ```
 {
-  "BASE": [<BASE_GROUP1>, <BASE_GROUP2>]
-  
+  "BASE": [groups, ...]
+  "EXCEPT": [groups, ...]
+  "RAND": [num, spell_dmg]
 }
 ```
-### Base Groups
+
+- `BASE`: Groups to include
+- `EXCEPT`: Groups to exclude from pool of included targets
+- `RAND`: Include if targets should be randomly selected
+  - `num`: int, number of targets to randomly choose
+  - `spell_dmg`: bool, whether or not the number of cards is affected by spell damage
+
+**Targets may also be simply replaced with a single string of the base group to include**
+
+### Groups
 - `TARGET`: The user-selected target of this spell or battlecry, restrictions defined in `playReqirements` field
 - `ADJACENT`: The minions adjacent to the target, not applicable if the target is not a minion in play
 - `HERO`: The friendly hero
